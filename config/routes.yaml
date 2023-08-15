@@ -1,0 +1,16 @@
+controllers:
+    resource:
+        path: ../src/Controller/
+        namespace: App\Controller
+    type: attribute
+# config/routes.yaml
+login:
+    path: /api/login
+    methods: ['POST']
+
+api_refresh_token:
+    path: /api/token/refresh
+
+logout:
+    path: /api/logout
+    methods: ['POST']

@@ -1,0 +1,29 @@
+-Schedule tour {
+-name
+-email
+-phone
+-datetime
+-message
+}
+
+-Request info {
+-name
+-email
+-phone
+-message
+}
+
+-Send mail after submit Schedule tour form or Request info form : done
+
+-Create handle file with endpoint and connect it in others entities endpoints : done
+
+-Create properties filter action : done
+
+-Add illustration case in cities
+
+###ADMIN FRONTEND
+
+-create routing and page
+-create table for each entities
+-create form for each entities
+-create list for each entities

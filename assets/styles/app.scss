@@ -1,0 +1,11 @@
+@import "./bootstrap/bootstrap.scss";
+
+body {
+  font-family: sans-serif;
+}
+
+.nav-color {
+  background-color: $gray-100;
+  box-shadow: 0px 10px 15px -3px rgba(0,0,0,0.1);
+
+}
