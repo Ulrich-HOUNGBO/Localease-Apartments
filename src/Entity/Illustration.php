@@ -58,7 +58,7 @@ class Illustration
     private ?int $id = null;
 
     #[ORM\Column(length: 255, nullable: true)]
-    #[Groups(['illustration:read'])]
+    #[Groups(['illustration:read', "read:property", 'read:property:item'])]
     #[ApiProperty(types: ['https://schema.org/contentUrl'])]
     public ?string $contentUrl = null;
 

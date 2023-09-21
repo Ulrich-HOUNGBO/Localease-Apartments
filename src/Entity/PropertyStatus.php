@@ -31,7 +31,7 @@ class PropertyStatus
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
-    #[Groups(["read:property"])]
+    #[Groups(["read:property", "read:property:item"])]
     private ?string $title = null;
 
     #[ORM\Column(length: 255, nullable: true)]

@@ -37,10 +37,11 @@ class City
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups(["city:read"])]
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
-    #[Groups(["read:property", "city:read", "city:write"])]
+    #[Groups(["read:property", "city:read", "city:write", "read:property:item"])]
     private ?string $name = null;
 
     #[ORM\Column(length: 255, nullable: true)]

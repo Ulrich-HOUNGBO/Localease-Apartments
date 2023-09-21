@@ -52,36 +52,36 @@ use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ApiFilter(RangeFilter::class, properties: ['price'])]
 #[ApiFilter(SearchFilter::class, properties: ['city.name' => 'exact', 'town.name' => 'exact', 'type.title' => 'exact',
-    'status.title' => 'exact', 'name' => 'partial'])]
+    'status.title' => 'exact', 'name' => 'partial', 'bedNumber' => 'exact', 'bathNumber' => 'exact', 'square' => 'exact'])]
 
 class Property
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    #[Groups(["read:property", "write:property"])]
+    #[Groups(["read:property", "read:property:item", "write:property"])]
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
-    #[Groups(["read:property", "write:property", "write:property:item"])]
+    #[Groups(["read:property", "read:property:item", "write:property", "write:property:item"])]
     private ?string $name = null;
 
     #[ORM\Column(length: 255)]
-    #[Groups(["read:property", "write:property", "write:property:item"])]
+    #[Groups(["read:property", "read:property:item", "write:property", "write:property:item"])]
     private ?string $location = null;
 
     #[ORM\Column(type: Types::TEXT)]
-    #[Groups(["read:property", "write:property", "write:property:item"])]
+    #[Groups(["read:property", "read:property:item", "write:property", "write:property:item"])]
     private ?string $description = null;
 
     #[ORM\ManyToOne(inversedBy: 'properties')]
     #[ORM\JoinColumn(nullable: false)]
-    #[Groups(["read:property", "write:property", "write:property:item"])]
+    #[Groups(["read:property", "read:property:item", "write:property", "write:property:item"])]
     private ?City $city = null;
 
     #[ORM\ManyToOne(inversedBy: 'properties')]
     #[ORM\JoinColumn(nullable: false)]
-    #[Groups(["read:property", "write:property", "write:property:item"])]
+    #[Groups(["read:property", "read:property:item", "write:property", "write:property:item"])]
     private ?Town $town = null;
 
     #[ORM\Column]
@@ -89,41 +89,57 @@ class Property
     private ?\DateTimeImmutable $createdAt = null;
 
     #[ORM\Column]
-    #[Groups(["read:property", "write:property", "write:property:item"])]
+    #[Groups(["read:property", "read:property:item", "write:property", "write:property:item"])]
     private ?\DateTimeImmutable $updatedAt = null;
 
     #[ORM\Column]
-    #[Groups(["read:property", "write:property", "write:property:item", "write:property"])]
+    #[Groups(["read:property", "read:property:item", "write:property", "write:property:item", "write:property"])]
     private ?bool $isOnline = null;
 
     #[ORM\Column(length: 255)]
-    #[Groups(["read:property", "write:property", "write:property:item"])]
+    #[Groups(["read:property", "read:property:item", "write:property", "write:property:item"])]
     private ?string $slug = null;
 
     #[ORM\OneToMany(mappedBy: 'property', targetEntity: Illustration::class)]
-    #[Groups(["read:property", "write:property", "write:property:item"])]
+    #[Groups(["read:property", "read:property:item", "write:property", "write:property:item"])]
     private Collection $illustrations;
 
     #[ORM\Column]
-    #[Groups(["read:property", "write:property", "write:property:item"])]
+    #[Groups(["read:property", "read:property:item", "write:property", "write:property:item"])]
     private ?int $price = null;
 
     #[ORM\ManyToOne(inversedBy: 'properties')]
-    #[Groups(["read:property", "write:property", "write:property:item"])]
+    #[Groups(["read:property", "read:property:item", "write:property", "write:property:item"])]
     private ?PropertyType $type = null;
 
     #[ORM\ManyToOne(inversedBy: 'properties')]
-    #[Groups(["read:property", "write:property", "write:property:item"])]
+    #[Groups(["read:property", "read:property:item", "write:property", "write:property:item"])]
     private ?PropertyStatus $status = null;
 
     #[ORM\ManyToMany(targetEntity: Feature::class, inversedBy: 'properties')]
-    #[Groups(["read:property", "write:property", "write:property:item"])]
+    #[Groups(["read:property", "read:property:item", "write:property", "write:property:item"])]
     private Collection $feature;
+
+    #[ORM\Column]
+    #[Groups(["read:property", "read:property:item", "write:property", "write:property:item"])]
+    private ?int $bathNumber = null;
+
+    #[ORM\Column]
+    #[Groups(["read:property", "read:property:item", "write:property", "write:property:item"])]
+    private ?int $bedNumber = null;
+
+    #[ORM\Column]
+    #[Groups(["read:property", "write:property", "write:property:item"])]
+    private ?int $square = null;
+
+    #[ORM\OneToMany(mappedBy: 'property', targetEntity: ScheduleRequest::class)]
+    private Collection $scheduleRequests;
 
     public function __construct()
     {
         $this->illustrations = new ArrayCollection();
         $this->feature = new ArrayCollection();
+        $this->scheduleRequests = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -334,6 +350,66 @@ class Property
     public function removeFeature(Feature $feature): static
     {
         $this->feature->removeElement($feature);
+
+        return $this;
+    }
+
+    public function getSquare(): ?int
+    {
+        return $this->square;
+    }
+
+    public function setSquare(?int $square): void
+    {
+        $this->square = $square;
+    }
+
+    public function getBedNumber(): ?int
+    {
+        return $this->bedNumber;
+    }
+
+    public function setBedNumber(?int $bedNumber): void
+    {
+        $this->bedNumber = $bedNumber;
+    }
+
+    public function getBathNumber(): ?int
+    {
+        return $this->bathNumber;
+    }
+
+    public function setBathNumber(?int $bathNumber): void
+    {
+        $this->bathNumber = $bathNumber;
+    }
+
+    /**
+     * @return Collection<int, ScheduleRequest>
+     */
+    public function getScheduleRequests(): Collection
+    {
+        return $this->scheduleRequests;
+    }
+
+    public function addScheduleRequest(ScheduleRequest $scheduleRequest): static
+    {
+        if (!$this->scheduleRequests->contains($scheduleRequest)) {
+            $this->scheduleRequests->add($scheduleRequest);
+            $scheduleRequest->setProperty($this);
+        }
+
+        return $this;
+    }
+
+    public function removeScheduleRequest(ScheduleRequest $scheduleRequest): static
+    {
+        if ($this->scheduleRequests->removeElement($scheduleRequest)) {
+            // set the owning side to null (unless already changed)
+            if ($scheduleRequest->getProperty() === $this) {
+                $scheduleRequest->setProperty(null);
+            }
+        }
 
         return $this;
     }
