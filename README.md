@@ -4,6 +4,12 @@
 <img src="image/home.png" alt=""></img>
 </p>
 
+## Inspiration
+
+
+Our project helps households find the apartment that suits them best, without having to travel. Our team members are Evence Barsour and myself. As an engineering problem, we wanted to focus on two things: creating an experience that would be both web- and mobile-friendly, and building a reliable, sophisticated service.
+In our West African sub-region, few households can afford the luxury of buying a house. As a result, rental apartments are becoming increasingly popular in the region. Having grown up in a rented house myself, I know how difficult it can be to find an apartment that suits you, having to make dozens of visits to different towns and cities... It was to remedy this that we came up with the idea of building a web platform that would enable households to find the apartment that suits them without having to go anywhere.
+
 ## Introduction
 
 - [Project deployed link](https://walrus-skilled-actually.ngrok-free.app) for view project demo
